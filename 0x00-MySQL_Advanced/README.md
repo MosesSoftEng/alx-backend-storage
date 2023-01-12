@@ -1,6 +1,10 @@
+# :book: 0x02. Python - Async Comprehension.
+## :page_with_curl: Topics Covered.
+1. Python - Async Comprehension.
+
+# :computer: Tasks.
+
 ## [0. We are all unique!](0-uniq_users.sql)
-
-
 ### :page_with_curl: Task requirements.
 Write a SQL script that creates a table users following these requirements:
 
@@ -36,7 +40,6 @@ id  email   name
 bob@dylan:~$ 
 ```
 
-
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
@@ -47,9 +50,9 @@ chmod +x 0-uniq_users.sql
 cat 0-uniq_users.sql | mysql -uroot -p holberton
 ```
 
-
 ### :heavy_check_mark: Solution
 > [:point_right: 0-uniq_users.sql](0-uniq_users.sql)
+
 
 
 ## [1. In and not out](1-country_users.sql)
@@ -188,6 +191,7 @@ cat 3-glam_rock.sql | mysql -uroot -p holberton
 ### :heavy_check_mark: Solution
 > [:point_right: 3-glam_rock.sql](3-glam_rock.sql)
 
+
 ## [4. Buy buy buy](4-store.sql)
 ### :page_with_curl: Task requirements.
 Define and annotate the following variables with the specified values:
@@ -232,6 +236,7 @@ cat 4-init.sql | mysql -uroot -p holberton
 
 ### :heavy_check_mark: Solution
 > [:point_right: 4-store.sql](4-store.sql)
+
 
 ## [5. Email validation to sent](5-valid_email.sql)
 ### :page_with_curl: Task requirements.
@@ -458,6 +463,7 @@ mypy 6-bonus.sql
 
 ### :heavy_check_mark: Solution
 > [:point_right: 5-valid_email.sql](5-valid_email.sql)
+
 
 ## [7. Average score](7-average_score.sql)
 ### :page_with_curl: Task requirements.
@@ -898,6 +904,7 @@ mypy 11-need_meeting.sql
 ### :heavy_check_mark: Solution
 > [:point_right: 11-need_meeting.sql](11-need_meeting.sql)
 
+
 ## [12. Average weighted score](100-average_weighted_score.sql)
 ### :page_with_curl: Task requirements.
 Write a SQL script that creates a stored procedure ComputeAverageWeightedScoreForUser that computes and store the average weighted score for a student.
@@ -1013,7 +1020,9 @@ chmod +x 100-init.sql
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 100-average_weighted_score.sql](100-average_weighted_score.sql)
+> [:point_right: 100-average_weighted_score.sql](101-average_weighted_score.sql)
+
+
 ## [13. Average weighted score for all!](101-average_weighted_score.sql)
 ### :page_with_curl: Task requirements.
 Write a SQL script that creates a stored procedure ComputeAverageWeightedScoreForUsers that computes and store the average weighted score for all students.
@@ -1130,3 +1139,11 @@ chmod +x 101-init.sql
 > [:point_right: 101-average_weighted_score.sql](101-average_weighted_score.sql)
 
 
+# :man: Author and Credits.
+This project was done by [SE. Moses Mwangi](https://github.com/MosesSoftEng). Feel free to get intouch with me;
+
+:iphone: WhatsApp [+254115227963](https://wa.me/254115227963)
+
+:email: Email [moses.soft.eng@gmail.com](mailto:moses.soft.eng@gmail.com)
+
+:thumbsup: A lot of thanks to [ALX-Africa Software Engineering](https://www.alxafrica.com/) program for the project requirements.
