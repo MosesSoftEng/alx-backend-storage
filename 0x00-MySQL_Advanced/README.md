@@ -574,3 +574,67 @@ mypy 7-average_score.sql
 > [:point_right: 7-init.sql](7-average_score.sql)
 
 
+## [8. Optimize simple search](8-index_my_names.sql)
+### :page_with_curl: Task requirements.
+Write a SQL script that creates an index idx_name_first on the table names and the first letter of name.
+
+Requirements:
+
+*    Import this table dump: names.sql.zip
+*    Only the first letter of name must be indexed
+
+Context: Index is not the solution for any performance issue, but well used, it’s really powerful!
+```
+bob@dylan:~$ cat names.sql | mysql -uroot -p holberton
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ mysql -uroot -p holberton
+Enter password: 
+mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%';
++-------------+
+| COUNT(name) |
++-------------+
+|      302936 |
++-------------+
+1 row in set (2.19 sec)
+mysql> 
+mysql> exit
+bye
+bob@dylan:~$ 
+bob@dylan:~$ cat 8-index_my_names.sql | mysql -uroot -p holberton 
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ mysql -uroot -p holberton
+Enter password: 
+mysql> SHOW index FROM names;
++-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name       | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| names |          1 | idx_name_first |            1 | name        | A         |          25 |        1 | NULL   | YES  | BTREE      |         |               |
++-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+mysql> 
+mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%';
++-------------+
+| COUNT(name) |
++-------------+
+|      302936 |
++-------------+
+1 row in set (0.82 sec)
+mysql> 
+mysql> exit
+bye
+bob@dylan:~$ 
+```
+
+### :wrench: Task setup.
+```bash
+# Create task files and set execute permission.
+touch 8-index_my_names.sql
+chmod +x 8-index_my_names.sql
+```
+
+### :heavy_check_mark: Solution
+> [:point_right: 8-index_my_names.sql](8-index_my_names.sql)
+
+
