@@ -706,3 +706,74 @@ chmod +x 9-main.py
 > [:point_right: 9-index_name_score.sql](9-index_name_score.sql)
 
 
+## [10. Duck typing - first element of a sequence](10-div.sql)
+### :page_with_curl: Task requirements.
+Write a SQL script that creates a function SafeDiv that divides (and returns) the first by the second number or returns 0 if the second number is equal to 0.
+
+Requirements:
+
+*    You must create a function
+*    The function SafeDiv takes 2 arguments:
+    *    a, INT
+    *    b, INT
+*    And returns a / b or 0 if b == 0
+```
+bob@dylan:~$ cat 10-init.sql
+-- Initial
+DROP TABLE IF EXISTS numbers;
+
+CREATE TABLE IF NOT EXISTS numbers (
+    a int default 0,
+    b int default 0
+);
+
+INSERT INTO numbers (a, b) VALUES (10, 2);
+INSERT INTO numbers (a, b) VALUES (4, 5);
+INSERT INTO numbers (a, b) VALUES (2, 3);
+INSERT INTO numbers (a, b) VALUES (6, 3);
+INSERT INTO numbers (a, b) VALUES (7, 0);
+INSERT INTO numbers (a, b) VALUES (6, 8);
+
+bob@dylan:~$ cat 10-init.sql | mysql -uroot -p holberton
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ cat 10-div.sql | mysql -uroot -p holberton
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ echo "SELECT (a / b) FROM numbers;" | mysql -uroot -p holberton
+Enter password: 
+(a / b)
+5.0000
+0.8000
+0.6667
+2.0000
+NULL
+0.7500
+bob@dylan:~$ 
+bob@dylan:~$ echo "SELECT SafeDiv(a, b) FROM numbers;" | mysql -uroot -p holberton
+Enter password: 
+SafeDiv(a, b)
+5
+0.800000011920929
+0.6666666865348816
+2
+0
+0.75
+bob@dylan:~$ 
+```
+
+### :wrench: Task setup.
+```bash
+# Create task files and set execute permission.
+touch 10-div.sql
+chmod +x 10-div.sql
+
+# Tests
+touch 10-init.sql
+chmod +x 10-init.sql
+```
+
+### :heavy_check_mark: Solution
+> [:point_right: 10-div.sql](10-div.sql)
+
+
