@@ -149,3 +149,42 @@ cat 2-fans.sql | mysql -uroot -p holberton > tmp_res ; head tmp_res
 ### :heavy_check_mark: Solution
 > [:point_right: 2-fans.sql](2-fans.sql)
 
+
+## [3. Old school band](3-glam_rock.sql)
+### :page_with_curl: Task requirements.
+Write a SQL script that lists all bands with Glam rock as their main style, ranked by their longevity
+
+Requirements:
+*    Import this table dump: metal_bands.sql.zip
+*    Column names must be: band_name and lifespan (in years)
+*    You should use attributes formed and split for computing the lifespan
+*    Your script can be executed on any database
+
+```
+bob@dylan:~$ cat metal_bands.sql | mysql -uroot -p holberton
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ cat 3-glam_rock.sql | mysql -uroot -p holberton 
+Enter password: 
+band_name   lifespan
+Alice Cooper    56
+Mötley Crüe   34
+Marilyn Manson  31
+The 69 Eyes 30
+Hardcore Superstar  23
+Nasty Idols 0
+Hanoi Rocks 0
+bob@dylan:~$ 
+```
+
+### :wrench: Task setup.
+```bash
+# Create task files and set execute permission.
+touch 3-glam_rock.sql
+chmod +x 3-glam_rock.sql
+cat 3-glam_rock.sql | mysql -uroot -p holberton
+```
+
+### :heavy_check_mark: Solution
+> [:point_right: 3-glam_rock.sql](3-glam_rock.sql)
+
