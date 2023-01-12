@@ -638,3 +638,71 @@ chmod +x 8-index_my_names.sql
 > [:point_right: 8-index_my_names.sql](8-index_my_names.sql)
 
 
+## [9. Optimize search and score](9-index_name_score.sql)
+### :page_with_curl: Task requirements.
+Write a SQL script that creates an index idx_name_first_score on the table names and the first letter of name and the score.
+
+Requirements:
+
+*    Import this table dump: names.sql.zip
+*    Only the first letter of name AND score must be indexed
+```
+bob@dylan:~$ cat names.sql | mysql -uroot -p holberton
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ mysql -uroot -p holberton
+Enter password: 
+mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%' AND score < 80;
++-------------+
+| count(name) |
++-------------+
+|       60717 |
++-------------+
+1 row in set (2.40 sec)
+mysql> 
+mysql> exit
+bye
+bob@dylan:~$ 
+bob@dylan:~$ cat 9-index_name_score.sql | mysql -uroot -p holberton 
+Enter password: 
+bob@dylan:~$ 
+bob@dylan:~$ mysql -uroot -p holberton
+Enter password: 
+mysql> SHOW index FROM names;
++-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name             | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| names |          1 | idx_name_first_score |            1 | name        | A         |          25 |        1 | NULL   | YES  | BTREE      |         |               |
+| names |          1 | idx_name_first_score |            2 | score       | A         |        3901 |     NULL | NULL   | YES  | BTREE      |         |               |
++-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+mysql> 
+mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%' AND score < 80;
++-------------+
+| COUNT(name) |
++-------------+
+|       60717 |
++-------------+
+1 row in set (0.48 sec)
+mysql> 
+mysql> exit
+bye
+bob@dylan:~$ 
+```
+
+### :wrench: Task setup.
+```bash
+# Create task files and set execute permission.
+touch 9-index_name_score.sql
+chmod +x 9-index_name_score.sql
+
+# Tests
+touch 9-main.py
+chmod +x 9-main.py
+./9-main.py
+```
+
+### :heavy_check_mark: Solution
+> [:point_right: 9-index_name_score.sql](9-index_name_score.sql)
+
+
