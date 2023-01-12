@@ -42,6 +42,8 @@ bob@dylan:~$
 # Create task files and set execute permission.
 touch 0-uniq_users.sql
 chmod +x 0-uniq_users.sql
+
+# Tests
 cat 0-uniq_users.sql | mysql -uroot -p holberton
 ```
 
