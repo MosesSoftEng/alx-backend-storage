@@ -102,43 +102,33 @@ cat 2-insert | mongo my_db
 > [:point_right: 2-insert](2-insert)
 
 
-## [3. Old school band](3-glam_rock.sql)
+## [3. All documents](3-all)
 ### :page_with_curl: Task requirements.
-Write a SQL script that lists all bands with Glam rock as their main style, ranked by their longevity
+Write a script that lists all documents in the collection school:
 
-Requirements:
-*    Import this table dump: metal_bands.sql.zip
-*    Column names must be: band_name and lifespan (in years)
-*    You should use attributes formed and split for computing the lifespan
-*    Your script can be executed on any database
-
+*    The database name will be passed as option of mongo command
 ```
-bob@dylan:~$ cat metal_bands.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 3-glam_rock.sql | mysql -uroot -p holberton 
-Enter password: 
-band_name   lifespan
-Alice Cooper    56
-Mötley Crüe   34
-Marilyn Manson  31
-The 69 Eyes 30
-Hardcore Superstar  23
-Nasty Idols 0
-Hanoi Rocks 0
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ cat 3-all | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "_id" : ObjectId("5a8fad532b69437b63252406"), "name" : "Holberton school" }
+bye
+guillaume@ubuntu:~/0x01$
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 3-glam_rock.sql
-chmod +x 3-glam_rock.sql
-cat 3-glam_rock.sql | mysql -uroot -p holberton
+touch 3-all
+chmod +x 3-all
+
+#Test
+cat 3-all | mongo my_db
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 3-glam_rock.sql](3-glam_rock.sql)
+> [:point_right: 3-all](3-all)
 
 
 ## [4. Buy buy buy](4-store.sql)
