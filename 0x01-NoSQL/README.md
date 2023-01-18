@@ -437,126 +437,63 @@ pycodestyle 10-update_topics.py
 > [:point_right: 10-update_topics.py](10-update_topics.py)
 
 
-## [11. More involved type annotations](11-need_meeting.sql)
+## [11. Where can I learn Python?](11-schools_by_topic.py)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates a view need_meeting that lists all students that have a score under 80 (strict) and no last_meeting or more than 1 month.
+Write a Python function that returns the list of school having a specific topic:
 
-Requirements:
-
-*    The view need_meeting should return all students name when:
-    *    They score are under (strict) to 80
-    *    AND no last_meeting date OR more than a month
+*    Prototype: def schools_by_topic(mongo_collection, topic):
+*    mongo_collection will be the pymongo collection object
+*    topic (string) will be topic searched
 ```
-bob@dylan:~$ cat 11-init.sql
--- Initial
-DROP TABLE IF EXISTS students;
+guillaume@ubuntu:~/0x01$ cat 11-main.py
+#!/usr/bin/env python3
+""" 11-main """
+from pymongo import MongoClient
+list_all = __import__('8-all').list_all
+insert_school = __import__('9-insert_school').insert_school
+schools_by_topic = __import__('11-schools_by_topic').schools_by_topic
 
-CREATE TABLE IF NOT EXISTS students (
-    name VARCHAR(255) NOT NULL,
-    score INT default 0,
-    last_meeting DATE NULL 
-);
+if __name__ == "__main__":
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    school_collection = client.my_db.school
 
-INSERT INTO students (name, score) VALUES ("Bob", 80);
-INSERT INTO students (name, score) VALUES ("Sylvia", 120);
-INSERT INTO students (name, score) VALUES ("Jean", 60);
-INSERT INTO students (name, score) VALUES ("Steeve", 50);
-INSERT INTO students (name, score) VALUES ("Camilia", 80);
-INSERT INTO students (name, score) VALUES ("Alexa", 130);
+    j_schools = [
+        { 'name': "Holberton school", 'topics': ["Algo", "C", "Python", "React"]},
+        { 'name': "UCSF", 'topics': ["Algo", "MongoDB"]},
+        { 'name': "UCLA", 'topics': ["C", "Python"]},
+        { 'name': "UCSD", 'topics': ["Cassandra"]},
+        { 'name': "Stanford", 'topics': ["C", "React", "Javascript"]}
+    ]
+    for j_school in j_schools:
+        insert_school(school_collection, **j_school)
 
-bob@dylan:~$ cat 11-init.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 11-need_meeting.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 11-main.sql
--- Test view
-SELECT * FROM need_meeting;
+    schools = schools_by_topic(school_collection, "Python")
+    for school in schools:
+        print("[{}] {} {}".format(school.get('_id'), school.get('name'), school.get('topics', "")))
 
-SELECT "--";
-
-UPDATE students SET score = 40 WHERE name = 'Bob';
-SELECT * FROM need_meeting;
-
-SELECT "--";
-
-UPDATE students SET score = 80 WHERE name = 'Steeve';
-SELECT * FROM need_meeting;
-
-SELECT "--";
-
-UPDATE students SET last_meeting = CURDATE() WHERE name = 'Jean';
-SELECT * FROM need_meeting;
-
-SELECT "--";
-
-UPDATE students SET last_meeting = ADDDATE(CURDATE(), INTERVAL -2 MONTH) WHERE name = 'Jean';
-SELECT * FROM need_meeting;
-
-SELECT "--";
-
-SHOW CREATE TABLE need_meeting;
-
-SELECT "--";
-
-SHOW CREATE TABLE students;
-
-bob@dylan:~$ 
-bob@dylan:~$ cat 11-main.sql | mysql -uroot -p holberton
-Enter password: 
-name
-Jean
-Steeve
---
---
-name
-Bob
-Jean
-Steeve
---
---
-name
-Bob
-Jean
---
---
-name
-Bob
---
---
-name
-Bob
-Jean
---
---
-View    Create View character_set_client    collation_connection
-XXXXXX<yes, here it will display the View SQL statement :-) >XXXXXX
---
---
-Table   Create Table
-students    CREATE TABLE `students` (\n  `name` varchar(255) NOT NULL,\n  `score` int(11) DEFAULT '0',\n  `last_meeting` date DEFAULT NULL\n) ENGINE=InnoDB DEFAULT CHARSET=latin1
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ ./11-main.py
+[5a90731fd4321e1e5a3f53e3] Holberton school ['Algo', 'C', 'Python', 'React']
+[5a90731fd4321e1e5a3f53e5] UCLA ['C', 'Python']
+guillaume@ubuntu:~/0x01$ 
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 11-need_meeting.sql
-chmod +x 11-need_meeting.sql
+touch 11-schools_by_topic.py
+chmod +x 11-schools_by_topic.py
 
 # Tests
-touch 11-init.sql
-chmod +x 11-init.sql
-
+touch 11-main.py
+chmod +x 11-main.py
 
 # Lint
-pycodestyle 11-need_meeting.sql
-mypy 11-need_meeting.sql
+pycodestyle 11-schools_by_topic.py
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 11-need_meeting.sql](11-need_meeting.sql)
+> [:point_right: 11-schools_by_topic.py](11-schools_by_topic.py)
 
 
 ## [12. Average weighted score](100-average_weighted_score.sql)

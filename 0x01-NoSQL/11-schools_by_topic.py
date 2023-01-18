@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-'''Task 11's module.
+'''Module.
 '''
 
 
 def schools_by_topic(mongo_collection, topic):
-    '''Returns the list of school having a specific topic.
+    '''Function that returns the list of school having a specific topic.
     '''
     topic_filter = {
         'topics': {
