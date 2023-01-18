@@ -496,238 +496,106 @@ pycodestyle 11-schools_by_topic.py
 > [:point_right: 11-schools_by_topic.py](11-schools_by_topic.py)
 
 
-## [12. Average weighted score](100-average_weighted_score.sql)
+## [12. Log stats](12-log_stats.py)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates a stored procedure ComputeAverageWeightedScoreForUser that computes and store the average weighted score for a student.
+Write a Python script that provides some stats about Nginx logs stored in MongoDB:
 
-Requirements:
+*    Database: logs
+*    Collection: nginx
+*    Display (same as the example):
+*    *    first line: x logs where x is the number of documents in this collection
+*    *    second line: Methods:
+*    *    5 lines with the number of documents with the method = ["GET", "POST", "PUT", "PATCH", "DELETE"] in this order (see example below - warning: it’s a tabulation before each line)
+*    *    one line with the number of documents with:
+*    *   *  method=GET
+*    *   *  path=/status
 
-*    Procedure ComputeAverageScoreForUser is taking 1 input:
-    *    user_id, a users.id value (you can assume user_id is linked to an existing users)
+You can use this dump as data sample: dump.zip
 
-Tips:
-
-*    Calculate-Weighted-Average
+The output of your script must be exactly the same as the example
 ```
-bob@dylan:~$ cat 100-init.sql
--- Initial
-DROP TABLE IF EXISTS corrections;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS projects;
-
-CREATE TABLE IF NOT EXISTS users (
-    id int not null AUTO_INCREMENT,
-    name varchar(255) not null,
-    average_score float default 0,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS projects (
-    id int not null AUTO_INCREMENT,
-    name varchar(255) not null,
-    weight int default 1,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS corrections (
-    user_id int not null,
-    project_id int not null,
-    score float default 0,
-    KEY `user_id` (`user_id`),
-    KEY `project_id` (`project_id`),
-    CONSTRAINT fk_user_id FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_project_id FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
-);
-
-INSERT INTO users (name) VALUES ("Bob");
-SET @user_bob = LAST_INSERT_ID();
-
-INSERT INTO users (name) VALUES ("Jeanne");
-SET @user_jeanne = LAST_INSERT_ID();
-
-INSERT INTO projects (name, weight) VALUES ("C is fun", 1);
-SET @project_c = LAST_INSERT_ID();
-
-INSERT INTO projects (name, weight) VALUES ("Python is cool", 2);
-SET @project_py = LAST_INSERT_ID();
-
-
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_bob, @project_c, 80);
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_bob, @project_py, 96);
-
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_jeanne, @project_c, 91);
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_jeanne, @project_py, 73);
-
-bob@dylan:~$ 
-bob@dylan:~$ cat 100-init.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 100-average_weighted_score.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 100-main.sql
--- Show and compute average weighted score
-SELECT * FROM users;
-SELECT * FROM projects;
-SELECT * FROM corrections;
-
-CALL ComputeAverageWeightedScoreForUser((SELECT id FROM users WHERE name = "Jeanne"));
-
-SELECT "--";
-SELECT * FROM users;
-
-bob@dylan:~$ 
-bob@dylan:~$ cat 100-main.sql | mysql -uroot -p holberton 
-Enter password: 
-id  name    average_score
-1   Bob 0
-2   Jeanne  82
-id  name    weight
-1   C is fun    1
-2   Python is cool  2
-user_id project_id  score
-1   1   80
-1   2   96
-2   1   91
-2   2   73
---
---
-id  name    average_score
-1   Bob 0
-2   Jeanne  79
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ curl -o dump.zip -s "https://s3.amazonaws.com/intranet-projects-files/holbertonschool-webstack/411/dump.zip"
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ unzip dump.zip
+Archive:  dump.zip
+   creating: dump/
+   creating: dump/logs/
+  inflating: dump/logs/nginx.metadata.json  
+  inflating: dump/logs/nginx.bson    
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ mongorestore dump
+2018-02-23T20:12:37.807+0000    preparing collections to restore from
+2018-02-23T20:12:37.816+0000    reading metadata for logs.nginx from dump/logs/nginx.metadata.json
+2018-02-23T20:12:37.825+0000    restoring logs.nginx from dump/logs/nginx.bson
+2018-02-23T20:12:40.804+0000    [##......................]  logs.nginx  1.21MB/13.4MB  (9.0%)
+2018-02-23T20:12:43.803+0000    [#####...................]  logs.nginx  2.88MB/13.4MB  (21.4%)
+2018-02-23T20:12:46.803+0000    [#######.................]  logs.nginx  4.22MB/13.4MB  (31.4%)
+2018-02-23T20:12:49.803+0000    [##########..............]  logs.nginx  5.73MB/13.4MB  (42.7%)
+2018-02-23T20:12:52.803+0000    [############............]  logs.nginx  7.23MB/13.4MB  (53.8%)
+2018-02-23T20:12:55.803+0000    [###############.........]  logs.nginx  8.53MB/13.4MB  (63.5%)
+2018-02-23T20:12:58.803+0000    [#################.......]  logs.nginx  10.1MB/13.4MB  (74.9%)
+2018-02-23T20:13:01.803+0000    [####################....]  logs.nginx  11.3MB/13.4MB  (83.9%)
+2018-02-23T20:13:04.803+0000    [######################..]  logs.nginx  12.8MB/13.4MB  (94.9%)
+2018-02-23T20:13:06.228+0000    [########################]  logs.nginx  13.4MB/13.4MB  (100.0%)
+2018-02-23T20:13:06.230+0000    no indexes to restore
+2018-02-23T20:13:06.231+0000    finished restoring logs.nginx (94778 documents)
+2018-02-23T20:13:06.232+0000    done
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ ./12-log_stats.py 
+94778 logs
+Methods:
+    method GET: 93842
+    method POST: 229
+    method PUT: 0
+    method PATCH: 0
+    method DELETE: 0
+47415 status check
+guillaume@ubuntu:~/0x01$ 
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 100-average_weighted_score.sql
-chmod +x 100-average_weighted_score.sql
-cat 100-main.sql | mysql -uroot -p holberton
+touch 12-log_stats.py
+chmod +x 12-log_stats.py
 
-# Tests
-touch 100-init.sql
-chmod +x 100-init.sql
+# Test
+./12-log_stats.py 
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 100-average_weighted_score.sql](101-average_weighted_score.sql)
+> [:point_right: 12-log_stats.py](12-log_stats.py)
 
 
-## [13. Average weighted score for all!](101-average_weighted_score.sql)
+## [13. Regex filter](100-find)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates a stored procedure ComputeAverageWeightedScoreForUsers that computes and store the average weighted score for all students.
+Write a script that lists all documents with name starting by Holberton in the collection school:
 
-Requirements:
-
-*    Procedure ComputeAverageWeightedScoreForUsers is not taking any input.
-
-Tips:
-
-*    Calculate-Weighted-Average
+*    The database name will be passed as option of mongo command
 ```
-bob@dylan:~$ cat 101-init.sql
--- Initial
-DROP TABLE IF EXISTS corrections;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS projects;
-
-CREATE TABLE IF NOT EXISTS users (
-    id int not null AUTO_INCREMENT,
-    name varchar(255) not null,
-    average_score float default 0,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS projects (
-    id int not null AUTO_INCREMENT,
-    name varchar(255) not null,
-    weight int default 1,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS corrections (
-    user_id int not null,
-    project_id int not null,
-    score float default 0,
-    KEY `user_id` (`user_id`),
-    KEY `project_id` (`project_id`),
-    CONSTRAINT fk_user_id FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_project_id FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
-);
-
-INSERT INTO users (name) VALUES ("Bob");
-SET @user_bob = LAST_INSERT_ID();
-
-INSERT INTO users (name) VALUES ("Jeanne");
-SET @user_jeanne = LAST_INSERT_ID();
-
-INSERT INTO projects (name, weight) VALUES ("C is fun", 1);
-SET @project_c = LAST_INSERT_ID();
-
-INSERT INTO projects (name, weight) VALUES ("Python is cool", 2);
-SET @project_py = LAST_INSERT_ID();
-
-
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_bob, @project_c, 80);
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_bob, @project_py, 96);
-
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_jeanne, @project_c, 91);
-INSERT INTO corrections (user_id, project_id, score) VALUES (@user_jeanne, @project_py, 73);
-
-bob@dylan:~$ 
-bob@dylan:~$ cat 101-init.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 101-average_weighted_score.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 101-main.sql
--- Show and compute average weighted score
-SELECT * FROM users;
-SELECT * FROM projects;
-SELECT * FROM corrections;
-
-CALL ComputeAverageWeightedScoreForUsers();
-
-SELECT "--";
-SELECT * FROM users;
-
-bob@dylan:~$ 
-bob@dylan:~$ cat 101-main.sql | mysql -uroot -p holberton 
-Enter password: 
-id  name    average_score
-1   Bob 0
-2   Jeanne  0
-id  name    weight
-1   C is fun    1
-2   Python is cool  2
-user_id project_id  score
-1   1   80
-1   2   96
-2   1   91
-2   2   73
---
---
-id  name    average_score
-1   Bob 90.6667
-2   Jeanne  79
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ cat 100-find | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "_id" : ObjectId("5a90731fd4321e1e5a3f53e3"), "name" : "Holberton school" }
+{ "_id" : ObjectId("5a90731fd4321e1e5a3f53e3"), "name" : "Holberton School" }
+{ "_id" : ObjectId("5a90731fd4321e1e5a3f53e3"), "name" : "Holberton-school" }
+bye
+guillaume@ubuntu:~/0x01$
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 101-average_weighted_score.sql
-chmod +x 101-average_weighted_score.sql
+touch 100-find
+chmod +x 100-find
 
-# Tests
-touch 101-init.sql
-chmod +x 101-init.sql
+# Test
+cat 100-find | mongo my_db
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 101-average_weighted_score.sql](101-average_weighted_score.sql)
+> [:point_right: 100-find](100-find)
 
 
 # :man: Author and Credits.
