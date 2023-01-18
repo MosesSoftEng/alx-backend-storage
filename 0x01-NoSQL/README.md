@@ -131,50 +131,34 @@ cat 3-all | mongo my_db
 > [:point_right: 3-all](3-all)
 
 
-## [4. Buy buy buy](4-store.sql)
+## [4. All matches](4-match)
 ### :page_with_curl: Task requirements.
-Define and annotate the following variables with the specified values:
+Write a script that lists all documents with name="Holberton school" in the collection school:
 
-  * a, an integer with a value of 1
-  * pi, a float with a value of 3.14
-  * i_understand_annotations, a boolean with a value of True
-  * school, a string with a value of “Holberton”
+*    The database name will be passed as option of mongo command
 ```
-bob@dylan:~$ cat 4-store.sql
-#!/usr/bin/env python3
-
-a = __import__('4-define_variables').a
-pi = __import__('4-define_variables').pi
-i_understand_annotations = __import__('4-define_variables').i_understand_annotations
-school = __import__('4-define_variables').school
-
-print("a is a {} with a value of {}".format(type(a), a))
-print("pi is a {} with a value of {}".format(type(pi), pi))
-print("i_understand_annotations is a {} with a value of {}".format(type(i_understand_annotations), i_understand_annotations))
-print("school is a {} with a value of {}".format(type(school), school))
-
-bob@dylan:~$ ./4-store.sql
-a is a <class 'int'> with a value of 1
-pi is a <class 'float'> with a value of 3.14
-i_understand_annotations is a <class 'bool'> with a value of True
-school is a <class 'str'> with a value of Holberton
+guillaume@ubuntu:~/0x01$ cat 4-match | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "_id" : ObjectId("5a8fad532b69437b63252406"), "name" : "Holberton school" }
+bye
+guillaume@ubuntu:~/0x01$
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 4-store.sql
-chmod +x 4-store.sql
+touch 4-match
+chmod +x 4-match
 cat 4-main.sql | mysql -uroot -p holberton 
 
-# Tests
-touch 4-init.sql
-chmod +x 4-init.sql
-cat 4-init.sql | mysql -uroot -p holberton 
+# Test
+cat 4-match | mongo my_db
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 4-store.sql](4-store.sql)
+> [:point_right: 4-match](4-match)
 
 
 ## [5. Email validation to sent](5-valid_email.sql)
