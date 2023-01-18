@@ -322,72 +322,58 @@ pycodestyle 8-main.py
 > [:point_right: 8-all.py](8-all.py)
 
 
-## [9. Optimize search and score](9-index_name_score.sql)
+## [9. Insert a document in Python](9-insert_school.py)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates an index idx_name_first_score on the table names and the first letter of name and the score.
+Write a Python function that inserts a new document in a collection based on kwargs:
 
-Requirements:
+*    Prototype: def insert_school(mongo_collection, **kwargs):
+*    mongo_collection will be the pymongo collection object
+*    Returns the new _id
 
-*    Import this table dump: names.sql.zip
-*    Only the first letter of name AND score must be indexed
 ```
-bob@dylan:~$ cat names.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ mysql -uroot -p holberton
-Enter password: 
-mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%' AND score < 80;
-+-------------+
-| count(name) |
-+-------------+
-|       60717 |
-+-------------+
-1 row in set (2.40 sec)
-mysql> 
-mysql> exit
-bye
-bob@dylan:~$ 
-bob@dylan:~$ cat 9-index_name_score.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ mysql -uroot -p holberton
-Enter password: 
-mysql> SHOW index FROM names;
-+-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-| Table | Non_unique | Key_name             | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
-+-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-| names |          1 | idx_name_first_score |            1 | name        | A         |          25 |        1 | NULL   | YES  | BTREE      |         |               |
-| names |          1 | idx_name_first_score |            2 | score       | A         |        3901 |     NULL | NULL   | YES  | BTREE      |         |               |
-+-------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-2 rows in set (0.00 sec)
-mysql> 
-mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%' AND score < 80;
-+-------------+
-| COUNT(name) |
-+-------------+
-|       60717 |
-+-------------+
-1 row in set (0.48 sec)
-mysql> 
-mysql> exit
-bye
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ cat 9-main.py
+#!/usr/bin/env python3
+""" 9-main """
+from pymongo import MongoClient
+list_all = __import__('8-all').list_all
+insert_school = __import__('9-insert_school').insert_school
+
+if __name__ == "__main__":
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    school_collection = client.my_db.school
+    new_school_id = insert_school(school_collection, name="UCSF", address="505 Parnassus Ave")
+    print("New school created: {}".format(new_school_id))
+
+    schools = list_all(school_collection)
+    for school in schools:
+        print("[{}] {} {}".format(school.get('_id'), school.get('name'), school.get('address', "")))
+
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ ./9-main.py
+New school created: 5a8f60cfd4321e1403ba7abb
+[5a8f60cfd4321e1403ba7ab9] Holberton school
+[5a8f60cfd4321e1403ba7aba] UCSD
+[5a8f60cfd4321e1403ba7abb] UCSF 505 Parnassus Ave
+guillaume@ubuntu:~/0x01$ 
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 9-index_name_score.sql
-chmod +x 9-index_name_score.sql
+touch 9-insert_school.py
+chmod +x 9-insert_school.py
 
-# Tests
+# Test
 touch 9-main.py
 chmod +x 9-main.py
 ./9-main.py
+
+# Lint
+pycodestyle 9-insert_school.py
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 9-index_name_score.sql](9-index_name_score.sql)
+> [:point_right: 9-insert_school.py](9-insert_school.py)
 
 
 ## [10. Duck typing - first element of a sequence](10-div.sql)
