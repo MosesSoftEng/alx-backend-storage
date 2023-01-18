@@ -3,6 +3,7 @@
 ## :page_with_curl: Topics Covered.
 1. MySQL advanced.
 2. MongoDB NoSQL database.
+3. Redis basic.
 
 
 # :computer: Projects
@@ -107,18 +108,29 @@ cd 0x00-MySQL_Advanced
 ### :wrench: Project setup.
 ```bash
 ## Install MongoDB 4.2 in Ubuntu
-sudo wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
-sudo echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" > sudo /etc/apt/sources.list.d/mongodb-org-4.2.list
-
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.2.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
-
-# Confirm MongoDB is installed.
-sudo service mongod status
+...
+ sudo service mongod status
+mongod start/running, process 3627
 mongo --version
-
-# Install pymomngo
-
+MongoDB shell version v4.2.8
+git version: 43d25964249164d76d5e04dd6cf38f6111e21f5f
+OpenSSL version: OpenSSL 1.1.1  11 Sep 2018
+allocator: tcmalloc
+modules: none
+build environment:
+    distmod: ubuntu1804
+    distarch: x86_64
+    target_arch: x86_64
+ 
+pip3 install pymongo
+python3
+>>> import pymongo
+>>> pymongo.__version__
+'3.10.1'
 ```
 
 ```bash
@@ -129,6 +141,26 @@ cd 0x01-NoSQL
 ```
 
 > [:point_right: Go to project](0x01-NoSQL)
+
+
+## [0x02. Redis basic](0x02-redis_basic)
+![Chnage my mind](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2020/1/40eab4627f1bea7dfe5e.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20230118%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230118T122540Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=164275e7da0191ee3dc55f54aa8b546bd7ba59203ee71a281058a7e4e56c64c3)
+### :wrench: Project setup.
+```bash
+## Install Redis on Ubuntu 18.04
+$ sudo apt-get -y install redis-server
+$ pip3 install redis
+$ sed -i "s/bind .*/bind 127.0.0.1/g" /etc/redis/redis.conf
+```
+
+```bash
+# Create project directory and readme.
+mkdir ./0x02-redis_basic/
+touch ./0x02-redis_basic/README.md
+cd 0x02-redis_basic
+```
+
+> [:point_right: Go to project](0x02-redis_basic)
 
 
 # :man: Author and Credits.
