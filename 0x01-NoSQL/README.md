@@ -275,68 +275,51 @@ cat 7-delete | mongo my_db
 > [:point_right: 7-init.sql](7-delete)
 
 
-## [8. Optimize simple search](8-index_my_names.sql)
+## [8. List all documents in Python](8-all.py)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates an index idx_name_first on the table names and the first letter of name.
+Write a Python function that lists all documents in a collection:
 
-Requirements:
-
-*    Import this table dump: names.sql.zip
-*    Only the first letter of name must be indexed
-
-Context: Index is not the solution for any performance issue, but well used, it’s really powerful!
+*    Prototype: def list_all(mongo_collection):
+*    Return an empty list if no document in the collection
+*    mongo_collection will be the pymongo collection object
 ```
-bob@dylan:~$ cat names.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ mysql -uroot -p holberton
-Enter password: 
-mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%';
-+-------------+
-| COUNT(name) |
-+-------------+
-|      302936 |
-+-------------+
-1 row in set (2.19 sec)
-mysql> 
-mysql> exit
-bye
-bob@dylan:~$ 
-bob@dylan:~$ cat 8-index_my_names.sql | mysql -uroot -p holberton 
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ mysql -uroot -p holberton
-Enter password: 
-mysql> SHOW index FROM names;
-+-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-| Table | Non_unique | Key_name       | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
-+-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-| names |          1 | idx_name_first |            1 | name        | A         |          25 |        1 | NULL   | YES  | BTREE      |         |               |
-+-------+------------+----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
-1 row in set (0.00 sec)
-mysql> 
-mysql> SELECT COUNT(name) FROM names WHERE name LIKE 'a%';
-+-------------+
-| COUNT(name) |
-+-------------+
-|      302936 |
-+-------------+
-1 row in set (0.82 sec)
-mysql> 
-mysql> exit
-bye
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ cat 8-main.py
+#!/usr/bin/env python3
+""" 8-main """
+from pymongo import MongoClient
+list_all = __import__('8-all').list_all
+
+if __name__ == "__main__":
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    school_collection = client.my_db.school
+    schools = list_all(school_collection)
+    for school in schools:
+        print("[{}] {}".format(school.get('_id'), school.get('name')))
+
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ ./8-main.py
+[5a8f60cfd4321e1403ba7ab9] Holberton school
+[5a8f60cfd4321e1403ba7aba] UCSD
+guillaume@ubuntu:~/0x01$ 
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 8-index_my_names.sql
-chmod +x 8-index_my_names.sql
+touch 8-all.py
+chmod +x 8-all.py
+
+# Test
+touch 8-main.py
+chmod +x 8-main.py
+./8-main.py
+
+# Lint
+pycodestyle 8-main.py
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 8-index_my_names.sql](8-index_my_names.sql)
+> [:point_right: 8-all.py](8-all.py)
 
 
 ## [9. Optimize search and score](9-index_name_score.sql)
