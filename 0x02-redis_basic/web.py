@@ -1,38 +1,34 @@
 #!/usr/bin/env python3
-'''A module with tools for request caching and tracking.
-'''
-import redis
 import requests
+import time
 from functools import wraps
-from typing import Callable
+from typing import Dict
 
+cache: Dict[str, str] = {}
 
-redis_store = redis.Redis()
-'''The module-level Redis instance.
-'''
-
-
-def data_cacher(method: Callable) -> Callable:
-    '''Caches the output of fetched data.
-    '''
-    @wraps(method)
-    def invoker(url) -> str:
-        '''The wrapper function for caching the output.
-        '''
-        redis_store.incr(f'count:{url}')
-        result = redis_store.get(f'result:{url}')
-        if result:
-            return result.decode('utf-8')
-        result = method(url)
-        redis_store.set(f'count:{url}', 0)
-        redis_store.setex(f'result:{url}', 10, result)
-        return result
-    return invoker
-
-
-@data_cacher
 def get_page(url: str) -> str:
-    '''Returns the content of a URL after caching the request's response,
-    and tracking the request.
-    '''
-    return requests.get(url).text
+    if url in cache:
+        print(f"Retrieving from cache: {url}")
+        return cache[url]
+    else:
+        print(f"Retrieving from web: {url}")
+        response = requests.get(url)
+        result = response.text
+        cache[url] = result
+        return result
+
+def cache_with_expiration(expiration: int):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            url = args[0]
+            key = f"count:{url}"
+            if key in cache:
+                count, timestamp = cache[key]
+                if time.time() - timestamp > expiration:
+                    result = func(*args, **kwargs)
+                    cache[key] = (count+1, time.time())
+                    return result
+                else:
+                    cache[key] = (count+1, timestamp)
+                    return
