@@ -369,82 +369,72 @@ chmod +x 9-main.py
 ./9-main.py
 
 # Lint
-pycodestyle 9-insert_school.py
+pycodestyle 9-main.py
 ```
 
 ### :heavy_check_mark: Solution
 > [:point_right: 9-insert_school.py](9-insert_school.py)
 
 
-## [10. Duck typing - first element of a sequence](10-div.sql)
+## [10. Change school topics](10-update_topics.py)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates a function SafeDiv that divides (and returns) the first by the second number or returns 0 if the second number is equal to 0.
+Write a Python function that changes all topics of a school document based on the name:
 
-Requirements:
-
-*    You must create a function
-*    The function SafeDiv takes 2 arguments:
-    *    a, INT
-    *    b, INT
-*    And returns a / b or 0 if b == 0
+*    Prototype: def update_topics(mongo_collection, name, topics):
+*    mongo_collection will be the pymongo collection object
+*    name (string) will be the school name to update
+*    topics (list of strings) will be the list of topics approached in the school
 ```
-bob@dylan:~$ cat 10-init.sql
--- Initial
-DROP TABLE IF EXISTS numbers;
+guillaume@ubuntu:~/0x01$ cat 10-main.py
+#!/usr/bin/env python3
+""" 10-main """
+from pymongo import MongoClient
+list_all = __import__('8-all').list_all
+update_topics = __import__('10-update_topics').update_topics
 
-CREATE TABLE IF NOT EXISTS numbers (
-    a int default 0,
-    b int default 0
-);
+if __name__ == "__main__":
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    school_collection = client.my_db.school
+    update_topics(school_collection, "Holberton school", ["Sys admin", "AI", "Algorithm"])
 
-INSERT INTO numbers (a, b) VALUES (10, 2);
-INSERT INTO numbers (a, b) VALUES (4, 5);
-INSERT INTO numbers (a, b) VALUES (2, 3);
-INSERT INTO numbers (a, b) VALUES (6, 3);
-INSERT INTO numbers (a, b) VALUES (7, 0);
-INSERT INTO numbers (a, b) VALUES (6, 8);
+    schools = list_all(school_collection)
+    for school in schools:
+        print("[{}] {} {}".format(school.get('_id'), school.get('name'), school.get('topics', "")))
 
-bob@dylan:~$ cat 10-init.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ cat 10-div.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ echo "SELECT (a / b) FROM numbers;" | mysql -uroot -p holberton
-Enter password: 
-(a / b)
-5.0000
-0.8000
-0.6667
-2.0000
-NULL
-0.7500
-bob@dylan:~$ 
-bob@dylan:~$ echo "SELECT SafeDiv(a, b) FROM numbers;" | mysql -uroot -p holberton
-Enter password: 
-SafeDiv(a, b)
-5
-0.800000011920929
-0.6666666865348816
-2
-0
-0.75
-bob@dylan:~$ 
+    update_topics(school_collection, "Holberton school", ["iOS"])
+
+    schools = list_all(school_collection)
+    for school in schools:
+        print("[{}] {} {}".format(school.get('_id'), school.get('name'), school.get('topics', "")))
+
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ ./10-main.py
+[5a8f60cfd4321e1403ba7abb] UCSF 
+[5a8f60cfd4321e1403ba7aba] UCSD 
+[5a8f60cfd4321e1403ba7ab9] Holberton school ['Sys admin', 'AI', 'Algorithm']
+[5a8f60cfd4321e1403ba7abb] UCSF 
+[5a8f60cfd4321e1403ba7aba] UCSD 
+[5a8f60cfd4321e1403ba7ab9] Holberton school ['iOS']
+guillaume@ubuntu:~/0x01$ 
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 10-div.sql
-chmod +x 10-div.sql
+touch 10-update_topics.py
+chmod +x 10-update_topics.py
 
-# Tests
-touch 10-init.sql
-chmod +x 10-init.sql
+# Test
+touch 10-main.py
+chmod +x 10-main.py
+./10-main.py
+
+# Lint
+pycodestyle 10-update_topics.py
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 10-div.sql](10-div.sql)
+> [:point_right: 10-update_topics.py](10-update_topics.py)
 
 
 ## [11. More involved type annotations](11-need_meeting.sql)
