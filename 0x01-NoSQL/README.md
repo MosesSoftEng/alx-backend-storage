@@ -1,58 +1,38 @@
-# :book: 0x02. Python - Async Comprehension.
+# :book: 0x01. NoSQL - MongoDB.
 ## :page_with_curl: Topics Covered.
-1. Python - Async Comprehension.
+1. NoSQL database.
+2. MongoDB.
 
 # :computer: Tasks.
 
-## [0. We are all unique!](0-uniq_users.sql)
+## [0. List all databases](0-list_databases)
 ### :page_with_curl: Task requirements.
-Write a SQL script that creates a table users following these requirements:
-
-*   With these attributes:
-    *    id, integer, never null, auto increment and primary key
-    *    email, string (255 characters), never null and unique
-    *    name, string (255 characters)
-*    If the table already exists, your script should not fail
-*    Your script can be executed on any database
-
-Context: Make an attribute unique directly in the table schema will enforced your business rules and avoid bugs in your application
+Write a script that lists all databases in MongoDB.
 ```
-bob@dylan:~$ echo "SELECT * FROM users;" | mysql -uroot -p holberton
-Enter password: 
-ERROR 1146 (42S02) at line 1: Table 'holberton.users' doesn't exist
-bob@dylan:~$ 
-bob@dylan:~$ cat 0-uniq_users.sql | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ 
-bob@dylan:~$ echo 'INSERT INTO users (email, name) VALUES ("bob@dylan.com", "Bob");' | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ echo 'INSERT INTO users (email, name) VALUES ("sylvie@dylan.com", "Sylvie");' | mysql -uroot -p holberton
-Enter password: 
-bob@dylan:~$ echo 'INSERT INTO users (email, name) VALUES ("bob@dylan.com", "Jean");' | mysql -uroot -p holberton
-Enter password: 
-ERROR 1062 (23000) at line 1: Duplicate entry 'bob@dylan.com' for key 'email'
-bob@dylan:~$ 
-bob@dylan:~$ echo "SELECT * FROM users;" | mysql -uroot -p holberton
-Enter password: 
-id  email   name
-1   bob@dylan.com   Bob
-2   sylvie@dylan.com    Sylvie
-bob@dylan:~$ 
+guillaume@ubuntu:~/0x01$ cat 0-list_databases | mongo
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.6.3
+admin        0.000GB
+config       0.000GB
+local        0.000GB
+logs         0.005GB
+bye
+guillaume@ubuntu:~/0x01$
 ```
 
 ### :wrench: Task setup.
 ```bash
 # Create task files and set execute permission.
-touch 0-uniq_users.sql
-chmod +x 0-uniq_users.sql
+touch 0-list_databases
+chmod +x 0-list_databases
 
-# Tests
-cat 0-uniq_users.sql | mysql -uroot -p holberton
+# Test
+cat 0-list_databases | mongo
 ```
 
 ### :heavy_check_mark: Solution
-> [:point_right: 0-uniq_users.sql](0-uniq_users.sql)
-
+> [:point_right: 0-list_databases](0-list_databases)
 
 
 ## [1. In and not out](1-country_users.sql)
